@@ -1,0 +1,3 @@
+function testMessage() {
+	alert("hello!!!");
+}

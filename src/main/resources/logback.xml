@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+	scan="true" 配置文件異動時，會重新加載
+	scanPeriod="60 seconds" 監聽配志文件異動的時間 
+	debug=true(默認)，會打印出logback內部的訊息，實際運行設為false
+-->
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+	<!-- 
+	contextName設置上下文名稱 ，不設製默認為default
+	-->
+	<contextName>IFIWebAPIlog</contextName>
+	
+	<!-- 
+		設置變量屬性，通過設定值，可以寫入到上下文中
+		name-value，後續透過${}存取 
+	-->
+	<property name="LOG_HOME" value="logs"></property>
+	
+	<!-- 
+		appender，格式化輸出
+		name，名稱
+		class，指定何種輸出方式
+	 -->
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- ThresholdFilter為攔截器，會濾掉設定級別以下的訊息
+			<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+				<level>ERROR</level>
+			</filter>
+		-->
+		<!-- 
+			encoder，對日誌進行編碼
+				%d{HH:mm:ss.SSS} 日誌輸出時間
+				%thread 日誌輸出的進程名稱
+				%-5level 日誌輸出級別，並且5個字符靠左對齊
+				%logger{36} 日誌輸出者名稱
+				%msg 日誌訊息
+				%n 平台換行符號
+		 -->
+		<encoder>
+			<pattern>%contextName -- [%date{yyyy-MM-dd HH:mm:ss}][%thread][%level][%logger{36}:%line]: %msg%n</pattern>
+			<encoding>UTF-8</encoding>
+		</encoder>
+	</appender>
+	
+	<appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<encoding>UTF-8</encoding>
+		<file>${LOG_HOME}/info.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${LOG_HOME}/info.%d{yyyy-MM-dd}.log</FileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<layout>
+			<pattern>%contextName -- [%date{yyyy-MM-dd HH:mm:ss}][%thread][%level][%logger{36}:%line]: %msg%n</pattern>
+			<encoding>UTF-8</encoding>
+		</layout>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>INFO</level>
+			<onMatch>ACCEPT</onMatch>	
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+	
+	<!-- 暫時不引用，省點效能 
+	<appender name="WARN_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<encoding>UTF-8</encoding>
+		<file>${LOG_HOME}/warn.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${LOG_HOME}/warn.%d{yyyy-MM-dd}.log</FileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<layout>
+			<pattern>%contextName - - [%date{yyyy-MM-dd HH:mm:ss}][%thread][%level][%logger{36}:%line]: %msg%n</pattern>
+			<encoding>UTF-8</encoding>
+		</layout>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>WARN</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+	 -->
+	
+	<appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<encoding>UTF-8</encoding>
+		<file>${LOG_HOME}/error.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${LOG_HOME}/error.%d{yyyy-MM-dd}.log</FileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<layout>
+			<pattern>%contextName -- [%date{yyyy-MM-dd HH:mm:ss}][%thread][%level][%logger{36}:%line]: %msg%n</pattern>
+			<encoding>UTF-8</encoding>
+		</layout>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+	
+	<appender name="HQL_SQL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<encoding>UTF-8</encoding>
+		<file>${LOG_HOME}/hqlsql.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${LOG_HOME}/hqlsql.%d{yyyy-MM-dd}.log</FileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<layout>
+			<pattern>%contextName -- [%date{yyyy-MM-dd HH:mm:ss}][%thread][%level][%logger{36}:%line]: %msg%n</pattern>
+			<encoding>UTF-8</encoding>
+		</layout>
+	</appender>
+	
+	<appender name="JDBC_SQL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<encoding>UTF-8</encoding>
+		<file>${LOG_HOME}/jdbcsql.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${LOG_HOME}/jdbcsql.%d{yyyy-MM-dd}.log</FileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<layout>
+			<pattern>%contextName -- [%date{yyyy-MM-dd HH:mm:ss}][%thread][%level][%logger{36}:%line]: %msg%n</pattern>
+			<encoding>UTF-8</encoding>
+		</layout>
+	</appender>
+	
+	<appender name="HIKARI" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<encoding>UTF-8</encoding>
+		<file>${LOG_HOME}/hikari.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${LOG_HOME}/hikari.%d{yyyy-MM-dd}.log</FileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<layout>
+			<pattern>%contextName -- [%date{yyyy-MM-dd HH:mm:ss}][%thread][%level][%logger{36}:%line]: %msg%n</pattern>
+			<encoding>UTF-8</encoding>
+		</layout>
+	</appender>
+	
+	<appender name="WEB_REQUEST" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<encoding>UTF-8</encoding>
+		<file>${LOG_HOME}/webrequest.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${LOG_HOME}/webrequest.%d{yyyy-MM-dd}.log</FileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<layout>
+			<pattern>%contextName -- [%date{yyyy-MM-dd HH:mm:ss}][%thread][%level][%logger{36}:%line]: %msg%n</pattern>
+			<encoding>UTF-8</encoding>
+		</layout>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>INFO</level>
+			<onMatch>ACCEPT</onMatch>	
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+	
+	<!-- 紀錄hibernatetemplate sql 
+	<logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
+		<appender-ref ref="HQL_SQL" />
+	</logger>
+	-->
+	
+	<!-- 紀錄jdbctemplate sql -->
+	<logger name="org.springframework.jdbc.core" level="DEBUG" additivity="false">
+		<appender-ref ref="JDBC_SQL" />
+		<appender-ref ref="CONSOLE" />
+	</logger>
+	
+	<!-- 紀錄hikari，正式上線時，再關閉HIKARI-->
+	<logger name="com.zaxxer.hikari" level="ALL" additivity="false">
+		<appender-ref ref="HIKARI" />
+		<appender-ref ref="CONSOLE" />
+	</logger>
+	
+	<!-- 記錄controller的請求 --> 
+	<logger name="com.kangdainfo.webapi.aop.RequestLogAspect" level="INFO" additivity="false">
+		<appender-ref ref="WEB_REQUEST" />
+		<appender-ref ref="CONSOLE" />
+	</logger>
+	
+	<!-- 測試時使用，正式運行關閉 -->
+	<logger name="org.hibernate" level="WARN" additivity="false">
+		<appender-ref ref="CONSOLE" />
+	</logger>
+	
+	<logger name="org.hibernate.cache" level="DEBUG" additivity="false">
+		<appender-ref ref="CONSOLE" />
+	</logger>
+	
+	<logger name="org.springframework.transaction" level="DEBUG" additivity="false">
+		<appender-ref ref="CONSOLE" />
+	</logger>
+	<!-- END 測試時使用，正式運行關閉 -->
+	
+	<!-- 
+		root結點是必要的結點，用來指定最基礎的日誌輸出級別
+	 -->
+	<root level="info">
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="INFO_FILE" />
+		<!-- <appender-ref ref="WARN_FILE" /> -->
+		<appender-ref ref="ERROR_FILE" />
+	</root>
+	
+	<!-- 範例
+	logger 用來設定某一類別，日誌輸出級別
+	<logger name="com.dudu.controller"/>
+	 
+	 additivity="false" 是否向上級logger傳的打樣訊息
+	<logger name="com.dudu.controller.LearnController" level="WARN" additivity="false">
+		<appender-ref ref="console"/>
+	</logger>
+	
+	<logger name="org.springframework" level="debug" additivity="false">
+		<appender-ref ref="console" />
+	</logger>
+	
+	<logger name="com.mkyong.helloworld" level="debug" additivity="false">
+		<appender-ref ref="console" />
+	</logger>
+	-->
+	
+</configuration>
