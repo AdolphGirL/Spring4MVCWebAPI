@@ -12,7 +12,7 @@
 		<!-- compiler-plugin、 war-plugin會參考project.build.sourceEncoding-->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java-version>1.8</java-version>
-		<org.springframework-version>4.3.10.RELEASE</org.springframework-version>
+		<org.springframework-version>5.2.1.RELEASE</org.springframework-version>
 		<logback.version>1.2.3</logback.version>
 		<jcl.slf4j.version>1.7.25</jcl.slf4j.version>
 		<logback.ext.spring>0.1.4</logback.ext.spring>
